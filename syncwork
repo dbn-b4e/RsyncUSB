@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Help
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    echo "Usage: syncwork [SOURCE_FOLDER]"
+    echo ""
+    echo "Sync a folder to an external USB drive using rsync."
+    echo ""
+    echo "Arguments:"
+    echo "  SOURCE_FOLDER    Folder to sync (default: ~/Work)"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help       Show this help message"
+    echo ""
+    echo "Excludes: .DS_Store, @eaDir, .SynologyWorkingDirectory"
+    exit 0
+fi
+
 # Source folder: first argument or ~/Work
 SOURCE="${1:-$HOME/Work}"
 
