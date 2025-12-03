@@ -24,7 +24,8 @@ sudo chmod +x /usr/local/bin/syncwork
 ## Usage
 
 ```bash
-syncwork
+syncwork                    # syncs ~/Work (default)
+syncwork /path/to/folder    # syncs custom folder
 ```
 
 Example output:
@@ -38,7 +39,7 @@ Available external disks:
 
 Select disk number [1]: 1
 
-Syncing ~/Work to /Volumes/CORSAIR/Work ...
+Syncing /Users/you/Work to /Volumes/CORSAIR/ ...
 ```
 
 ## Requirements

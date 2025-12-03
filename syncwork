@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Source folder: first argument or ~/Work
+SOURCE="${1:-$HOME/Work}"
+
+if [ ! -d "$SOURCE" ]; then
+    echo "Source folder not found: $SOURCE"
+    exit 1
+fi
+
 # Find external volumes (exclude system volumes)
 VOLUMES=$(ls /Volumes/ | grep -v "Macintosh HD" | grep -v "com.apple" | grep -v "Sauvegardes")
 
@@ -30,11 +38,11 @@ if [ -z "$SELECTED" ]; then
 fi
 
 echo ""
-echo "Syncing ~/Work to /Volumes/$SELECTED/Work ..."
+echo "Syncing $SOURCE to /Volumes/$SELECTED/ ..."
 echo ""
 
 /usr/local/bin/rsync -avh --info=progress2 \
     --exclude='.SynologyWorkingDirectory' \
     --exclude='@eaDir' \
     --exclude='.DS_Store' \
-    ~/Work "/Volumes/$SELECTED"
+    "$SOURCE" "/Volumes/$SELECTED"
