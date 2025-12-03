@@ -26,6 +26,7 @@ sudo chmod +x /usr/local/bin/syncwork
 ```bash
 syncwork                    # syncs ~/Work (default)
 syncwork /path/to/folder    # syncs custom folder
+syncwork --help             # show help
 ```
 
 Example output:
