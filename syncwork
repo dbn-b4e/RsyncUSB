@@ -12,7 +12,8 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     echo "Options:"
     echo "  -h, --help       Show this help message"
     echo ""
-    echo "Excludes: .DS_Store, @eaDir, .SynologyWorkingDirectory"
+    echo "Excludes: .DS_Store, @eaDir, .SynologyWorkingDirectory, node_modules, .venv*, __pycache__, .pio"
+    echo "Target disk is exFAT: symlinks are skipped, permissions are not copied."
     exit 0
 fi
 
@@ -57,8 +58,19 @@ echo ""
 echo "Syncing $SOURCE to /Volumes/$SELECTED/ ..."
 echo ""
 
-/usr/local/bin/rsync -avh --info=progress2 \
+# Disque cible en exFAT (Mac + Windows) : pas de droits, de propriétaires ni de liens symboliques.
+#  -rt          : récursif + dates (pas -a : perms/owner/group/links impossibles en exFAT)
+#  (pas de -l)  : les liens symboliques sont ignorés (ex. Work/2025/12. SABENA LOCKER -> SABENA-ENGINEERING/SXS,
+#                 sinon le dossier pointé serait copié deux fois)
+#  --modify-window=1 : tolère l'arrondi des dates sur exFAT/FAT
+/usr/local/bin/rsync -rtvh --info=progress2 \
+    --no-perms --no-owner --no-group \
+    --modify-window=1 \
     --exclude='.SynologyWorkingDirectory' \
     --exclude='@eaDir' \
     --exclude='.DS_Store' \
+    --exclude='node_modules' \
+    --exclude='.venv*' \
+    --exclude='__pycache__' \
+    --exclude='.pio' \
     "$SOURCE" "/Volumes/$SELECTED"
